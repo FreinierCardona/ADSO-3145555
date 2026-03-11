@@ -1,2 +1,22 @@
-node_modules/
-package-lock.json
+# Archivos temporales de Excel
+~$*.xlsx
+~$*.xls
+
+# Archivos temporales de Word
+~$*.docx
+~$*.doc
+
+# Archivos temporales de PowerPoint
+~$*.pptx
+~$*.ppt
+
+# Archivos del sistema Windows
+Thumbs.db
+Desktop.ini
+
+# Archivos de VS Code
+.vscode/
+
+# Archivos temporales generales
+*.tmp
+*.temp
