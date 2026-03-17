@@ -1,325 +1,447 @@
--- Ejecutar el script .sql en una base de datos ya creada en PostgreSQL
----------------------------------------------------------------
--- ENTIDADES
+--CREATE DATABASE CoffeShop;
 
+-- ENTIDADES
 -- MODULE 2: PARAMETER
 CREATE TABLE type_document (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(50) NOT NULL,
-    -- Campos de auditoria simplificados
+   
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE person (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     document_number VARCHAR(20) UNIQUE NOT NULL,
-    type_document_id INT REFERENCES type_document(id),
+    type_document_id UUID REFERENCES type_document(id),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE file (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     file_name VARCHAR(255) NOT NULL,
     file_path TEXT NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 
 -- MODULE 1: SECURITY
 CREATE TABLE role (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(50) UNIQUE NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
-CREATE TABLE app_user ( -- Se usa app_user porque user es palabra reservada en SQL
-    id SERIAL PRIMARY KEY,
+CREATE TABLE app_user (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    person_id INT REFERENCES person(id),
+    person_id UUID REFERENCES person(id),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE module (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
-CREATE TABLE app_view ( -- app_view porque view es palabra reservada
-    id SERIAL PRIMARY KEY,
+CREATE TABLE app_view (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     route_path VARCHAR(255) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 -- PIVOTES DE SEGURIDAD
 CREATE TABLE user_role (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES app_user(id),
-    role_id INT REFERENCES role(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES app_user(id),
+    role_id UUID REFERENCES role(id),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE role_module (
-    id SERIAL PRIMARY KEY,
-    role_id INT REFERENCES role(id),
-    module_id INT REFERENCES module(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    role_id UUID REFERENCES role(id),
+    module_id UUID REFERENCES module(id),
     can_create BOOLEAN DEFAULT false,
     can_read BOOLEAN DEFAULT true,
     can_update BOOLEAN DEFAULT false,
     can_delete BOOLEAN DEFAULT false,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE module_view (
-    id SERIAL PRIMARY KEY,
-    module_id INT REFERENCES module(id),
-    view_id INT REFERENCES app_view(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    module_id UUID REFERENCES module(id),
+    view_id UUID REFERENCES app_view(id),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 
 -- MODULE 3: INVENTORY
 CREATE TABLE category (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE supplier (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(150) NOT NULL,
     contact_email VARCHAR(150),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE product (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(150) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
-    category_id INT REFERENCES category(id),
-    supplier_id INT REFERENCES supplier(id),
+    category_id UUID REFERENCES category(id),
+    supplier_id UUID REFERENCES supplier(id),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE inventory (
-    id SERIAL PRIMARY KEY,
-    product_id INT REFERENCES product(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id UUID REFERENCES product(id),
     stock_quantity INT NOT NULL DEFAULT 0,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 
 -- MODULE 4: SALES
 CREATE TABLE customer (
-    id SERIAL PRIMARY KEY,
-    person_id INT REFERENCES person(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    person_id UUID REFERENCES person(id),
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
-CREATE TABLE app_order ( -- app_order porque order es reservada
-    id SERIAL PRIMARY KEY,
-    customer_id INT REFERENCES customer(id),
+CREATE TABLE app_order (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id UUID REFERENCES customer(id),
     total_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE order_item (
-    id SERIAL PRIMARY KEY,
-    order_id INT REFERENCES app_order(id),
-    product_id INT REFERENCES product(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id UUID REFERENCES app_order(id),
+    product_id UUID REFERENCES product(id),
     quantity INT NOT NULL,
     unit_price DECIMAL(10,2) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 
 -- MODULE 5: METHOD PAYMENT
 CREATE TABLE method_payment (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(50) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 
 -- MODULE 6: BILLING
 CREATE TABLE invoice (
-    id SERIAL PRIMARY KEY,
-    order_id INT REFERENCES app_order(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_id UUID REFERENCES app_order(id),
     subtotal DECIMAL(10,2) NOT NULL,
     tax DECIMAL(10,2) NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE invoice_item (
-    id SERIAL PRIMARY KEY,
-    invoice_id INT REFERENCES invoice(id),
-    product_id INT REFERENCES product(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    invoice_id UUID REFERENCES invoice(id),
+    product_id UUID REFERENCES product(id),
     quantity INT NOT NULL,
     unit_price DECIMAL(10,2) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 CREATE TABLE payment (
-    id SERIAL PRIMARY KEY,
-    invoice_id INT REFERENCES invoice(id),
-    method_payment_id INT REFERENCES method_payment(id),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    invoice_id UUID REFERENCES invoice(id),
+    method_payment_id UUID REFERENCES method_payment(id),
     amount DECIMAL(10,2) NOT NULL,
     
     created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ, deleted_at TIMESTAMPTZ,
-    created_by INT, updated_by INT, deleted_by INT, status VARCHAR(20) DEFAULT 'Activo'
+    created_by UUID, updated_by UUID, deleted_by UUID, status VARCHAR(20) DEFAULT 'Activo'
 );
 
 ------------------------------------------------------------------
 
--- REGISTROS 
+-- REGISTROS (Usando UUIDs predecibles para mantener relaciones)
 
 -- 1. Insertar los 4 Roles fijos
-INSERT INTO role (name) VALUES 
-('Administrador'), ('Cajero'), ('Mesero'), ('Inventario');
+INSERT INTO role (id, name) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Administrador'), 
+('22222222-2222-2222-2222-222222222222', 'Cajero'), 
+('33333333-3333-3333-3333-333333333333', 'Mesero'), 
+('44444444-4444-4444-4444-444444444444', 'Inventario');
 
 -- 2. Tipos de Documento (10 registros)
-INSERT INTO type_document (name) VALUES 
-('Cédula de Ciudadanía'), ('Tarjeta de Identidad'), ('Cédula de Extranjería'), ('Pasaporte'), 
-('NIT'), ('RUT'), ('Registro Civil'), ('Permiso Especial'), ('Carnet Estudiantil'), ('Otro');
+INSERT INTO type_document (id, name) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Cédula de Ciudadanía'), ('22222222-2222-2222-2222-222222222222', 'Tarjeta de Identidad'), 
+('33333333-3333-3333-3333-333333333333', 'Cédula de Extranjería'), ('44444444-4444-4444-4444-444444444444', 'Pasaporte'), 
+('55555555-5555-5555-5555-555555555555', 'NIT'), ('66666666-6666-6666-6666-666666666666', 'RUT'), 
+('77777777-7777-7777-7777-777777777777', 'Registro Civil'), ('88888888-8888-8888-8888-888888888888', 'Permiso Especial'), 
+('99999999-9999-9999-9999-999999999999', 'Carnet Estudiantil'), ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Otro');
 
 -- 3. Personas (10 registros)
-INSERT INTO person (first_name, last_name, document_number, type_document_id) VALUES 
-('Juan', 'Pérez', '1001001', 1), ('María', 'Gómez', '1001002', 1), ('Carlos', 'López', '1001003', 1),
-('Ana', 'Díaz', '1001004', 1), ('Luis', 'Martínez', '1001005', 2), ('Laura', 'García', '1001006', 2),
-('Jorge', 'Rodríguez', '1001007', 3), ('Diana', 'Hernández', '1001008', 1), ('Diego', 'Ramírez', '1001009', 1),
-('Sofía', 'Vargas', '1001010', 1);
+INSERT INTO person (id, first_name, last_name, document_number, type_document_id) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Juan', 'Pérez', '1001001', '11111111-1111-1111-1111-111111111111'), 
+('22222222-2222-2222-2222-222222222222', 'María', 'Gómez', '1001002', '11111111-1111-1111-1111-111111111111'), 
+('33333333-3333-3333-3333-333333333333', 'Carlos', 'López', '1001003', '11111111-1111-1111-1111-111111111111'),
+('44444444-4444-4444-4444-444444444444', 'Ana', 'Díaz', '1001004', '11111111-1111-1111-1111-111111111111'), 
+('55555555-5555-5555-5555-555555555555', 'Luis', 'Martínez', '1001005', '22222222-2222-2222-2222-222222222222'), 
+('66666666-6666-6666-6666-666666666666', 'Laura', 'García', '1001006', '22222222-2222-2222-2222-222222222222'),
+('77777777-7777-7777-7777-777777777777', 'Jorge', 'Rodríguez', '1001007', '33333333-3333-3333-3333-333333333333'), 
+('88888888-8888-8888-8888-888888888888', 'Diana', 'Hernández', '1001008', '11111111-1111-1111-1111-111111111111'), 
+('99999999-9999-9999-9999-999999999999', 'Diego', 'Ramírez', '1001009', '11111111-1111-1111-1111-111111111111'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Sofía', 'Vargas', '1001010', '11111111-1111-1111-1111-111111111111');
 
 -- 4. Usuarios (10 registros apuntando a las personas)
-INSERT INTO app_user (username, password_hash, person_id) VALUES 
-('jperez', 'hash123', 1), ('mgomez', 'hash123', 2), ('clopez', 'hash123', 3), ('adiaz', 'hash123', 4),
-('lmartinez', 'hash123', 5), ('lgarcia', 'hash123', 6), ('jrodriguez', 'hash123', 7), 
-('dhernandez', 'hash123', 8), ('dramirez', 'hash123', 9), ('svargas', 'hash123', 10);
+INSERT INTO app_user (id, username, password_hash, person_id) VALUES 
+('11111111-1111-1111-1111-111111111111', 'jperez', 'hash123', '11111111-1111-1111-1111-111111111111'), 
+('22222222-2222-2222-2222-222222222222', 'mgomez', 'hash123', '22222222-2222-2222-2222-222222222222'), 
+('33333333-3333-3333-3333-333333333333', 'clopez', 'hash123', '33333333-3333-3333-3333-333333333333'), 
+('44444444-4444-4444-4444-444444444444', 'adiaz', 'hash123', '44444444-4444-4444-4444-444444444444'),
+('55555555-5555-5555-5555-555555555555', 'lmartinez', 'hash123', '55555555-5555-5555-5555-555555555555'), 
+('66666666-6666-6666-6666-666666666666', 'lgarcia', 'hash123', '66666666-6666-6666-6666-666666666666'), 
+('77777777-7777-7777-7777-777777777777', 'jrodriguez', 'hash123', '77777777-7777-7777-7777-777777777777'), 
+('88888888-8888-8888-8888-888888888888', 'dhernandez', 'hash123', '88888888-8888-8888-8888-888888888888'), 
+('99999999-9999-9999-9999-999999999999', 'dramirez', 'hash123', '99999999-9999-9999-9999-999999999999'), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'svargas', 'hash123', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
 
 -- 5. Módulos y Vistas (10 registros)
-INSERT INTO module (name) VALUES 
-('Seguridad'), ('Parámetros'), ('Inventario'), ('Ventas'), ('Facturación'), 
-('Reportes'), ('Configuración'), ('Caja'), ('Cocina'), ('Proveedores');
+INSERT INTO module (id, name) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Seguridad'), ('22222222-2222-2222-2222-222222222222', 'Parámetros'), 
+('33333333-3333-3333-3333-333333333333', 'Inventario'), ('44444444-4444-4444-4444-444444444444', 'Ventas'), 
+('55555555-5555-5555-5555-555555555555', 'Facturación'), ('66666666-6666-6666-6666-666666666666', 'Reportes'), 
+('77777777-7777-7777-7777-777777777777', 'Configuración'), ('88888888-8888-8888-8888-888888888888', 'Caja'), 
+('99999999-9999-9999-9999-999999999999', 'Cocina'), ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Proveedores');
 
-INSERT INTO app_view (name, route_path) VALUES 
-('Crear Usuario', '/users/create'), ('Listar Productos', '/products'), ('Nueva Venta', '/sales/new'),
-('Ver Facturas', '/invoices'), ('Ajuste Inventario', '/inventory/adjust'), ('Dashboard', '/home'),
-('Cerrar Caja', '/cash/close'), ('Pedidos Cocina', '/kitchen/orders'), ('Lista Clientes', '/customers'),
-('Crear Proveedor', '/suppliers/create');
+INSERT INTO app_view (id, name, route_path) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Crear Usuario', '/users/create'), ('22222222-2222-2222-2222-222222222222', 'Listar Productos', '/products'), 
+('33333333-3333-3333-3333-333333333333', 'Nueva Venta', '/sales/new'), ('44444444-4444-4444-4444-444444444444', 'Ver Facturas', '/invoices'), 
+('55555555-5555-5555-5555-555555555555', 'Ajuste Inventario', '/inventory/adjust'), ('66666666-6666-6666-6666-666666666666', 'Dashboard', '/home'),
+('77777777-7777-7777-7777-777777777777', 'Cerrar Caja', '/cash/close'), ('88888888-8888-8888-8888-888888888888', 'Pedidos Cocina', '/kitchen/orders'), 
+('99999999-9999-9999-9999-999999999999', 'Lista Clientes', '/customers'), ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Crear Proveedor', '/suppliers/create');
 
 -- 6. Pivotes de Seguridad (10 registros)
-INSERT INTO user_role (user_id, role_id) VALUES 
-(1, 1), (2, 2), (3, 3), (4, 4), (5, 3), (6, 2), (7, 3), (8, 3), (9, 2), (10, 4);
+INSERT INTO user_role (id, user_id, role_id) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'), 
+('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222'), 
+('33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333'), 
+('44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444'), 
+('55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', '33333333-3333-3333-3333-333333333333'), 
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', '22222222-2222-2222-2222-222222222222'), 
+('77777777-7777-7777-7777-777777777777', '77777777-7777-7777-7777-777777777777', '33333333-3333-3333-3333-333333333333'), 
+('88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888', '33333333-3333-3333-3333-333333333333'), 
+('99999999-9999-9999-9999-999999999999', '99999999-9999-9999-9999-999999999999', '22222222-2222-2222-2222-222222222222'), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '44444444-4444-4444-4444-444444444444');
 
--- Permisos (CRUD): Administrador puede todo en el módulo 1, Cajero solo leer en módulo 4, etc.
-INSERT INTO role_module (role_id, module_id, can_create, can_read, can_update, can_delete) VALUES 
-(1, 1, true, true, true, true), (1, 2, true, true, true, true), (2, 4, true, true, false, false),
-(2, 5, true, true, false, false), (3, 4, true, true, false, false), (3, 9, true, true, false, false),
-(4, 3, true, true, true, false), (4, 10, true, true, true, false), (1, 6, true, true, true, true),
-(2, 8, true, true, false, false);
+-- Permisos (CRUD)
+INSERT INTO role_module (id, role_id, module_id, can_create, can_read, can_update, can_delete) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', true, true, true, true), 
+('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', true, true, true, true), 
+('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', '44444444-4444-4444-4444-444444444444', true, true, false, false),
+('44444444-4444-4444-4444-444444444444', '22222222-2222-2222-2222-222222222222', '55555555-5555-5555-5555-555555555555', true, true, false, false), 
+('55555555-5555-5555-5555-555555555555', '33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444', true, true, false, false), 
+('66666666-6666-6666-6666-666666666666', '33333333-3333-3333-3333-333333333333', '99999999-9999-9999-9999-999999999999', true, true, false, false),
+('77777777-7777-7777-7777-777777777777', '44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333', true, true, true, false), 
+('88888888-8888-8888-8888-888888888888', '44444444-4444-4444-4444-444444444444', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', true, true, true, false), 
+('99999999-9999-9999-9999-999999999999', '11111111-1111-1111-1111-111111111111', '66666666-6666-6666-6666-666666666666', true, true, true, true),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', '88888888-8888-8888-8888-888888888888', true, true, false, false);
 
-INSERT INTO module_view (module_id, view_id) VALUES 
-(1, 1), (3, 2), (4, 3), (5, 4), (3, 5), (6, 6), (8, 7), (9, 8), (4, 9), (10, 10);
+INSERT INTO module_view (id, module_id, view_id) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'), 
+('22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222'), 
+('33333333-3333-3333-3333-333333333333', '44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333'), 
+('44444444-4444-4444-4444-444444444444', '55555555-5555-5555-5555-555555555555', '44444444-4444-4444-4444-444444444444'), 
+('55555555-5555-5555-5555-555555555555', '33333333-3333-3333-3333-333333333333', '55555555-5555-5555-5555-555555555555'), 
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666'), 
+('77777777-7777-7777-7777-777777777777', '88888888-8888-8888-8888-888888888888', '77777777-7777-7777-7777-777777777777'), 
+('88888888-8888-8888-8888-888888888888', '99999999-9999-9999-9999-999999999999', '88888888-8888-8888-8888-888888888888'), 
+('99999999-9999-9999-9999-999999999999', '44444444-4444-4444-4444-444444444444', '99999999-9999-9999-9999-999999999999'), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
 
 -- 7. Categorías y Proveedores (10 registros)
-INSERT INTO category (name) VALUES 
-('Bebidas Calientes'), ('Bebidas Frías'), ('Postres'), ('Panadería'), ('Sándwiches'),
-('Snacks'), ('Café en Grano'), ('Tés e Infusiones'), ('Desayunos'), ('Mercancía');
+INSERT INTO category (id, name) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Bebidas Calientes'), ('22222222-2222-2222-2222-222222222222', 'Bebidas Frías'), 
+('33333333-3333-3333-3333-333333333333', 'Postres'), ('44444444-4444-4444-4444-444444444444', 'Panadería'), 
+('55555555-5555-5555-5555-555555555555', 'Sándwiches'), ('66666666-6666-6666-6666-666666666666', 'Snacks'), 
+('77777777-7777-7777-7777-777777777777', 'Café en Grano'), ('88888888-8888-8888-8888-888888888888', 'Tés e Infusiones'), 
+('99999999-9999-9999-9999-999999999999', 'Desayunos'), ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Mercancía');
 
-INSERT INTO supplier (name, contact_email) VALUES 
-('Café Quindío', 'ventas@cafe.com'), ('Lácteos del Valle', 'pedidos@lacteos.com'), ('Panificadora Nacional', 'pan@nacional.com'),
-('Distribuidora de Vasos', 'insumos@vasos.com'), ('Dulces y Postres SAS', 'postres@dulces.com'), 
-('Frutas Frescas', 'frutas@frescas.com'), ('Carnes y Embutidos', 'carnes@embutidos.com'), 
-('Tés del Mundo', 'contacto@tes.com'), ('Aseo Limpio', 'aseo@limpio.com'), ('Papelería Central', 'papel@central.com');
+INSERT INTO supplier (id, name, contact_email) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Café Quindío', 'ventas@cafe.com'), 
+('22222222-2222-2222-2222-222222222222', 'Lácteos del Valle', 'pedidos@lacteos.com'), 
+('33333333-3333-3333-3333-333333333333', 'Panificadora Nacional', 'pan@nacional.com'),
+('44444444-4444-4444-4444-444444444444', 'Distribuidora de Vasos', 'insumos@vasos.com'), 
+('55555555-5555-5555-5555-555555555555', 'Dulces y Postres SAS', 'postres@dulces.com'), 
+('66666666-6666-6666-6666-666666666666', 'Frutas Frescas', 'frutas@frescas.com'), 
+('77777777-7777-7777-7777-777777777777', 'Carnes y Embutidos', 'carnes@embutidos.com'), 
+('88888888-8888-8888-8888-888888888888', 'Tés del Mundo', 'contacto@tes.com'), 
+('99999999-9999-9999-9999-999999999999', 'Aseo Limpio', 'aseo@limpio.com'), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Papelería Central', 'papel@central.com');
 
 -- 8. Productos e Inventario (10 registros)
-INSERT INTO product (name, price, category_id, supplier_id) VALUES 
-('Café Americano', 3500, 1, 1), ('Capuchino', 5000, 1, 1), ('Latte Frio', 6000, 2, 2),
-('Croissant', 4000, 4, 3), ('Cheesecake', 8000, 3, 5), ('Sándwich de Pavo', 12000, 5, 7),
-('Jugo Natural', 4500, 2, 6), ('Té Verde', 3000, 8, 8), ('Huevos Revueltos', 9000, 9, 2),
-('Bolsa Café 500g', 25000, 7, 1);
+INSERT INTO product (id, name, price, category_id, supplier_id) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Café Americano', 3500, '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'), 
+('22222222-2222-2222-2222-222222222222', 'Capuchino', 5000, '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'), 
+('33333333-3333-3333-3333-333333333333', 'Latte Frio', 6000, '22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222'),
+('44444444-4444-4444-4444-444444444444', 'Croissant', 4000, '44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333'), 
+('55555555-5555-5555-5555-555555555555', 'Cheesecake', 8000, '33333333-3333-3333-3333-333333333333', '55555555-5555-5555-5555-555555555555'), 
+('66666666-6666-6666-6666-666666666666', 'Sándwich de Pavo', 12000, '55555555-5555-5555-5555-555555555555', '77777777-7777-7777-7777-777777777777'),
+('77777777-7777-7777-7777-777777777777', 'Jugo Natural', 4500, '22222222-2222-2222-2222-222222222222', '66666666-6666-6666-6666-666666666666'), 
+('88888888-8888-8888-8888-888888888888', 'Té Verde', 3000, '88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888'), 
+('99999999-9999-9999-9999-999999999999', 'Huevos Revueltos', 9000, '99999999-9999-9999-9999-999999999999', '22222222-2222-2222-2222-222222222222'),
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Bolsa Café 500g', 25000, '77777777-7777-7777-7777-777777777777', '11111111-1111-1111-1111-111111111111');
 
-INSERT INTO inventory (product_id, stock_quantity) VALUES 
-(1, 100), (2, 80), (3, 50), (4, 30), (5, 15), (6, 20), (7, 40), (8, 60), (9, 25), (10, 10);
+INSERT INTO inventory (id, product_id, stock_quantity) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 100), 
+('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', 80), 
+('33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', 50), 
+('44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 30), 
+('55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 15), 
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', 20), 
+('77777777-7777-7777-7777-777777777777', '77777777-7777-7777-7777-777777777777', 40), 
+('88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888', 60), 
+('99999999-9999-9999-9999-999999999999', '99999999-9999-9999-9999-999999999999', 25), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 10);
 
 -- 9. Clientes y Pedidos (10 registros)
-INSERT INTO customer (person_id) VALUES 
-(1), (2), (3), (4), (5), (6), (7), (8), (9), (10);
+INSERT INTO customer (id, person_id) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'), 
+('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222'), 
+('33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333'), 
+('44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444'), 
+('55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555'), 
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666'), 
+('77777777-7777-7777-7777-777777777777', '77777777-7777-7777-7777-777777777777'), 
+('88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888'), 
+('99999999-9999-9999-9999-999999999999', '99999999-9999-9999-9999-999999999999'), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
 
-INSERT INTO app_order (customer_id, total_amount) VALUES 
-(1, 11500), (2, 8000), (3, 25000), (4, 4000), (5, 12000), (6, 3500), (7, 15000), (8, 9000), (9, 20000), (10, 6000);
+INSERT INTO app_order (id, customer_id, total_amount) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 11500), 
+('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', 8000), 
+('33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', 25000), 
+('44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 4000), 
+('55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 12000), 
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', 3500), 
+('77777777-7777-7777-7777-777777777777', '77777777-7777-7777-7777-777777777777', 15000), 
+('88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888', 9000), 
+('99999999-9999-9999-9999-999999999999', '99999999-9999-9999-9999-999999999999', 20000), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 6000);
 
-INSERT INTO order_item (order_id, product_id, quantity, unit_price) VALUES 
-(1, 1, 1, 3500), (1, 5, 1, 8000), (2, 5, 1, 8000), (3, 10, 1, 25000), (4, 4, 1, 4000),
-(5, 6, 1, 12000), (6, 1, 1, 3500), (7, 2, 3, 5000), (8, 9, 1, 9000), (9, 2, 4, 5000);
+INSERT INTO order_item (id, order_id, product_id, quantity, unit_price) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 1, 3500), 
+('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', '55555555-5555-5555-5555-555555555555', 1, 8000), 
+('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', '55555555-5555-5555-5555-555555555555', 1, 8000), 
+('44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 1, 25000), 
+('55555555-5555-5555-5555-555555555555', '44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 1, 4000),
+('66666666-6666-6666-6666-666666666666', '55555555-5555-5555-5555-555555555555', '66666666-6666-6666-6666-666666666666', 1, 12000), 
+('77777777-7777-7777-7777-777777777777', '66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 1, 3500), 
+('88888888-8888-8888-8888-888888888888', '77777777-7777-7777-7777-777777777777', '22222222-2222-2222-2222-222222222222', 3, 5000), 
+('99999999-9999-9999-9999-999999999999', '88888888-8888-8888-8888-888888888888', '99999999-9999-9999-9999-999999999999', 1, 9000), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '99999999-9999-9999-9999-999999999999', '22222222-2222-2222-2222-222222222222', 4, 5000);
 
 -- 10. Métodos de pago, Facturas y Pagos (10 registros)
-INSERT INTO method_payment (name) VALUES 
-('Efectivo'), ('Tarjeta de Crédito'), ('Tarjeta de Débito'), ('Nequi'), ('Daviplata'),
-('Transferencia'), ('Bono Regalo'), ('Puntos Fidelidad'), ('Cheque'), ('Criptomonedas');
+INSERT INTO method_payment (id, name) VALUES 
+('11111111-1111-1111-1111-111111111111', 'Efectivo'), ('22222222-2222-2222-2222-222222222222', 'Tarjeta de Crédito'), 
+('33333333-3333-3333-3333-333333333333', 'Tarjeta de Débito'), ('44444444-4444-4444-4444-444444444444', 'Nequi'), 
+('55555555-5555-5555-5555-555555555555', 'Daviplata'), ('66666666-6666-6666-6666-666666666666', 'Transferencia'), 
+('77777777-7777-7777-7777-777777777777', 'Bono Regalo'), ('88888888-8888-8888-8888-888888888888', 'Puntos Fidelidad'), 
+('99999999-9999-9999-9999-999999999999', 'Cheque'), ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Criptomonedas');
 
-INSERT INTO invoice (order_id, subtotal, tax, total) VALUES 
-(1, 9663, 1837, 11500), (2, 6722, 1278, 8000), (3, 21008, 3992, 25000), (4, 3361, 639, 4000),
-(5, 10084, 1916, 12000), (6, 2941, 559, 3500), (7, 12605, 2395, 15000), (8, 7563, 1437, 9000),
-(9, 16806, 3194, 20000), (10, 5042, 958, 6000);
+INSERT INTO invoice (id, order_id, subtotal, tax, total) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 9663, 1837, 11500), 
+('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', 6722, 1278, 8000), 
+('33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', 21008, 3992, 25000), 
+('44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 3361, 639, 4000),
+('55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 10084, 1916, 12000), 
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', 2941, 559, 3500), 
+('77777777-7777-7777-7777-777777777777', '77777777-7777-7777-7777-777777777777', 12605, 2395, 15000), 
+('88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888', 7563, 1437, 9000),
+('99999999-9999-9999-9999-999999999999', '99999999-9999-9999-9999-999999999999', 16806, 3194, 20000), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 5042, 958, 6000);
 
-INSERT INTO invoice_item (invoice_id, product_id, quantity, unit_price) VALUES 
-(1, 1, 1, 3500), (1, 5, 1, 8000), (2, 5, 1, 8000), (3, 10, 1, 25000), (4, 4, 1, 4000),
-(5, 6, 1, 12000), (6, 1, 1, 3500), (7, 2, 3, 5000), (8, 9, 1, 9000), (9, 2, 4, 5000);
+INSERT INTO invoice_item (id, invoice_id, product_id, quantity, unit_price) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 1, 3500), 
+('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', '55555555-5555-5555-5555-555555555555', 1, 8000), 
+('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', '55555555-5555-5555-5555-555555555555', 1, 8000), 
+('44444444-4444-4444-4444-444444444444', '33333333-3333-3333-3333-333333333333', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 1, 25000), 
+('55555555-5555-5555-5555-555555555555', '44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 1, 4000),
+('66666666-6666-6666-6666-666666666666', '55555555-5555-5555-5555-555555555555', '66666666-6666-6666-6666-666666666666', 1, 12000), 
+('77777777-7777-7777-7777-777777777777', '66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 1, 3500), 
+('88888888-8888-8888-8888-888888888888', '77777777-7777-7777-7777-777777777777', '22222222-2222-2222-2222-222222222222', 3, 5000), 
+('99999999-9999-9999-9999-999999999999', '88888888-8888-8888-8888-888888888888', '99999999-9999-9999-9999-999999999999', 1, 9000), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '99999999-9999-9999-9999-999999999999', '22222222-2222-2222-2222-222222222222', 4, 5000);
 
-INSERT INTO payment (invoice_id, method_payment_id, amount) VALUES 
-(1, 1, 11500), (2, 4, 8000), (3, 2, 25000), (4, 1, 4000), (5, 5, 12000),
-(6, 1, 3500), (7, 2, 15000), (8, 4, 9000), (9, 3, 20000), (10, 1, 6000);
+INSERT INTO payment (id, invoice_id, method_payment_id, amount) VALUES 
+('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 11500), 
+('22222222-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', '44444444-4444-4444-4444-444444444444', 8000), 
+('33333333-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', 25000), 
+('44444444-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', 4000), 
+('55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 12000),
+('66666666-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 3500), 
+('77777777-7777-7777-7777-777777777777', '77777777-7777-7777-7777-777777777777', '22222222-2222-2222-2222-222222222222', 15000), 
+('88888888-8888-8888-8888-888888888888', '88888888-8888-8888-8888-888888888888', '44444444-4444-4444-4444-444444444444', 9000), 
+('99999999-9999-9999-9999-999999999999', '99999999-9999-9999-9999-999999999999', '33333333-3333-3333-3333-333333333333', 20000), 
+('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '11111111-1111-1111-1111-111111111111', 6000);
 
 
 ------------------------------------------------------------------
 
 -- Funcion y Trigger 
 
--- Creamos la función básica
+-- Creamos la función básica para
 CREATE OR REPLACE FUNCTION seguridad_roles()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -332,3 +454,105 @@ CREATE TRIGGER trg_roles_advertencia
 BEFORE INSERT OR UPDATE OR DELETE ON role
 FOR EACH ROW EXECUTE PROCEDURE seguridad_roles();
 ------------------------------------------------------------------
+
+-- Funciones
+
+-- calcular el total de cada orden sumando todos los productos de esa orden
+CREATE OR REPLACE FUNCTION fn_total_orden(p_order_id UUID)
+RETURNS DECIMAL
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    total DECIMAL;
+BEGIN
+
+    SELECT SUM(quantity * unit_price), 
+    INTO total
+    FROM order_item
+    WHERE order_id = p_order_id;
+
+    RETURN total;
+
+END;
+$$;
+
+--  esta funcion devuelve el stock actual de un  producto
+CREATE OR REPLACE FUNCTION fn_stock_producto(p_product_id UUID)
+RETURNS INT
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    stock INT;
+BEGIN
+
+    SELECT stock_quantity
+    INTO stock
+    FROM inventory
+    WHERE product_id = p_product_id;
+
+    RETURN stock;
+
+END;
+$$;
+
+-- esta funcion cuenta el numero de pedidos que ha hecho un cliente
+CREATE OR REPLACE FUNCTION fn_total_pedidos_cliente(p_customer_id UUID)
+RETURNS INT
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    total_pedidos INT;
+BEGIN
+
+    SELECT COUNT(*)
+    INTO total_pedidos
+    FROM app_order
+    WHERE customer_id = p_customer_id;
+
+    RETURN total_pedidos;
+
+END;
+$$;
+
+
+
+------------------------------------------------------------------
+
+-- Vistas
+
+-- muestra los productos con stock
+CREATE VIEW vw_productos_stock AS
+SELECT 
+    p.name AS producto,
+    c.name AS categoria,
+    s.name AS proveedor,
+    i.stock_quantity AS stock,
+    p.price AS precio
+FROM product p
+JOIN category c ON p.category_id = c.id
+JOIN supplier s ON p.supplier_id = s.id
+JOIN inventory i ON p.id = i.product_id;
+
+-- muestra Factura con clientes
+CREATE VIEW vw_facturas_clientes AS
+SELECT 
+    i.id AS factura_id,
+    p.first_name || ' ' || p.last_name AS cliente,
+    i.subtotal,
+    i.tax,
+    i.total,
+    i.created_at
+FROM invoice i
+JOIN app_order o ON i.order_id = o.id
+JOIN customer c ON o.customer_id = c.id
+JOIN person p ON c.person_id = p.id;
+
+-- muestra las ventas por producto
+CREATE VIEW vw_ventas_productos AS
+SELECT 
+    pr.name AS producto,
+    SUM(oi.quantity) AS cantidad_vendida,
+    SUM(oi.quantity * oi.unit_price) AS total_vendido
+FROM order_item oi
+JOIN product pr ON oi.product_id = pr.id
+GROUP BY pr.name;
