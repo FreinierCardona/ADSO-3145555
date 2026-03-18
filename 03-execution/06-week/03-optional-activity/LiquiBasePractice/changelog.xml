@@ -24,4 +24,14 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="3" author="carlos">
+        <createTable tableName="categoria">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="nombre" type="varchar(100)"/>
+        </createTable>
+    </changeSet>
+
+
 </databaseChangeLog>
