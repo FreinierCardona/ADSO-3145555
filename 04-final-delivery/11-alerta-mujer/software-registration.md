@@ -65,7 +65,7 @@ Authors are the instructors and the apprentices listed in `team-roster.md`. Each
 | Country of origin / País de origen | Colombia |
 | Version registered / Versión a registrar | [`final-delivery-2026`](code-tag/README.md), tag anotado sobre `main` en los cuatro repositorios originales |
 | Short description of its functions / Breve descripción de sus funciones | Aplicación móvil y plataforma web para registrar cuentas, gestionar contactos de confianza y activar alertas SOS; conserva el estado de la emergencia, ubicaciones, evidencias capturadas manualmente y mensajes para consulta de participantes autorizados y atención administrativa. |
-| What sets it apart from similar software / Qué la diferencia de obras similares | **Required: a similar title exists in the other ficha / Obligatorio: existe un título similar en la otra ficha** |
+| What sets it apart from similar software / Qué la diferencia de obras similares | Integra activación SOS móvil, seguimiento de la alerta, evidencias fotográficas en almacenamiento privado, chat y un panel administrativo; la comparación formal con la obra homónima de otra ficha queda sujeta a revisión institucional. |
 | Programming languages / Lenguajes | Java, TypeScript y SQL |
 | Type: web, mobile, desktop, device / Tipo: web, móvil, escritorio, dispositivo | Aplicación móvil (React Native/Expo) y aplicación web |
 
@@ -119,4 +119,4 @@ El listado identifica componentes principales con licencia registrada en los arc
 - [ ] The information is true and the names match the official ID documents. / La información es veraz y los nombres coinciden con los documentos de identidad.
 - [ ] The listed authors are the people who created the software. / Los autores relacionados son quienes crearon el software.
 - [ ] Third-party components are declared. / Los componentes de terceros están declarados.
-- [ ] No passwords, tokens or keys are included. / No se incluyen contraseñas, tokens ni llaves.
+- [x] No passwords, tokens or keys are included. / No se incluyen contraseñas, tokens ni llaves.

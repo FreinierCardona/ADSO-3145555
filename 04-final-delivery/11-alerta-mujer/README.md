@@ -14,7 +14,7 @@ Final delivery of the training project / Entrega final del proyecto formativo.
 | Process / Proceso | Completion of the technologist taught stage / Finalización de la etapa lectiva del tecnólogo |
 | Research seedbed / Semillero de investigación | Developers & Geeks |
 | Delivery version / Versión del código | [`final-delivery-2026`](code-tag/README.md), tag anotado sobre `main` en los cuatro repositorios originales |
-| Delivery date / Fecha de entrega | Pendiente del PR final; código etiquetado y ZIP publicados el 2026-11-06 |
+| Delivery date / Fecha de entrega | 2026-11-06 (rama preparada para revisión y PR) |
 | Delivered by / Entregado por | Freinier Steven Cardona Perez (`FreinierCardona`) |
 
 ## Summary / Resumen
@@ -92,7 +92,7 @@ Configure todas las contraseñas, tokens y llaves únicamente en archivos `.env`
 
 | Full name / Nombre completo | Doc. type / Tipo | Doc. number / Número | Ficha | GitHub user / Usuario | Role / Rol | Verified and authorized / Verificado y autorizado |
 |---|---|---|---|---|---|---|
-| FREINIER STEVEN CARDONA PEREZ | TI | 1077726586 | 3145555 | FreinierCardona | Backend, frontend, base de datos, pruebas y documentación | ☐ |
+| FREINIER STEVEN CARDONA PEREZ | TI | 1077726586 | 3145555 | FreinierCardona | Backend, frontend, base de datos, pruebas y documentación | ☑ |
 
 Data use authorization: by checking the box, the member confirms their data and authorizes publishing their name, document number and ficha in this public repository, for the software registration process (Ley 1581 de 2012). Anyone who does not authorize it tells the instructor before delivering.
 
@@ -111,17 +111,16 @@ Autorización de datos: al marcar la casilla, el integrante confirma sus datos y
 | [`07-improvement-actions/`](07-improvement-actions/) | Improvement actions / Acciones de mejoramiento | ☑ PDF + DOCX |
 | [`08-manuals/`](08-manuals/) | Manuals / Manuales | ☑ 3 PDF + 3 DOCX |
 | [`09-project-article/`](09-project-article/) | Project article / Artículo del proyecto | ☑ PDF + DOCX |
-| [`10-videos/`](10-videos/) | Videos / Videos | ☐ |
+| [`10-videos/`](10-videos/) | Videos / Videos | ☑ Pitch y tutorial enlazados en YouTube |
 | [`code-tag/`](code-tag/) | Repository links, tags and ZIP files / Enlaces, tags y ZIP | ☑ Tags, ZIP y SHA-256 publicados; invitaciones del instructor pendientes de aceptación |
-| [`team-roster.md`](team-roster.md) | Team and roles / Equipo y roles | ☐ |
-| [`software-registration.md`](software-registration.md) | Software registration data / Datos para registro de software | ☐ |
+| [`team-roster.md`](team-roster.md) | Team and roles / Equipo y roles | ☑ Aprendiz identificado y rol documentado; aportes de instructores sujetos a ratificación |
+| [`software-registration.md`](software-registration.md) | Software registration data / Datos para registro de software | ☑ Ficha técnica y anexos; declaraciones institucionales sujetas a ratificación |
 
 ## Large files on Google Drive / Archivos pesados en Google Drive
 
-Only files too heavy for GitHub go here, such as demo videos. Everything else stays in this folder.
+The two videos are hosted on YouTube; the documents remain in this folder. / Los dos videos están alojados en YouTube y los documentos permanecen en esta carpeta.
 
-Aquí solo van archivos demasiado pesados para GitHub, como videos de demostración. Todo lo demás vive en esta carpeta.
-
-| File / Archivo | Size / Tamaño | Link / Enlace |
+| File / Archivo | Hosting / Alojamiento | Link / Enlace |
 |---|---|---|
-| | | |
+| Advertising pitch / Pitch publicitario | YouTube | [Ver pitch](https://www.youtube.com/watch?v=b_TRdjd9YgI) |
+| Usage tutorial / Tutorial de uso | YouTube | [Ver tutorial](https://www.youtube.com/watch?v=ToMrkmw4pIU) |
