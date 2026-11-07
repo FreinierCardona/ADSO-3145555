@@ -111,16 +111,16 @@ Autorización de datos: al marcar la casilla, el integrante confirma sus datos y
 | [`07-improvement-actions/`](07-improvement-actions/) | Improvement actions / Acciones de mejoramiento | ☑ PDF + DOCX |
 | [`08-manuals/`](08-manuals/) | Manuals / Manuales | ☑ 3 PDF + 3 DOCX |
 | [`09-project-article/`](09-project-article/) | Project article / Artículo del proyecto | ☑ PDF + DOCX |
-| [`10-videos/`](10-videos/) | Videos / Videos | ☑ Pitch y tutorial enlazados en YouTube |
+| [`10-videos/`](10-videos/) | Videos / Videos | ☑ Archivos originales MP4 enlazados en Google Drive |
 | [`code-tag/`](code-tag/) | Repository links, tags and ZIP files / Enlaces, tags y ZIP | ☑ Tags, ZIP y SHA-256 publicados; invitaciones del instructor pendientes de aceptación |
 | [`team-roster.md`](team-roster.md) | Team and roles / Equipo y roles | ☑ Aprendiz identificado y rol documentado; aportes de instructores sujetos a ratificación |
 | [`software-registration.md`](software-registration.md) | Software registration data / Datos para registro de software | ☑ Ficha técnica y anexos; declaraciones institucionales sujetas a ratificación |
 
 ## Large files on Google Drive / Archivos pesados en Google Drive
 
-The two videos are hosted on YouTube; the documents remain in this folder. / Los dos videos están alojados en YouTube y los documentos permanecen en esta carpeta.
+The two original MP4 videos are shared through Google Drive; the documents remain in this folder. / Los dos videos originales en MP4 se comparten mediante Google Drive y los documentos permanecen en esta carpeta.
 
 | File / Archivo | Hosting / Alojamiento | Link / Enlace |
 |---|---|---|
-| Advertising pitch / Pitch publicitario | YouTube | [Ver pitch](https://www.youtube.com/watch?v=b_TRdjd9YgI) |
-| Usage tutorial / Tutorial de uso | YouTube | [Ver tutorial](https://www.youtube.com/watch?v=ToMrkmw4pIU) |
+| Advertising pitch / Pitch publicitario (`AlertaMujer-pitch-publicitario.mp4`) | Google Drive | [Ver o descargar MP4](https://drive.google.com/file/d/1kdgJWpMYIDBZe91LRJHs_w0KXALURQs-/view?usp=sharing) |
+| Usage tutorial / Tutorial de uso (`Tutorial de Uso.mp4`) | Google Drive | [Ver o descargar MP4](https://drive.google.com/file/d/1vHyMte3tTOKHkvY8ptgIGUeUgV-Pj78H/view?usp=sharing) |

@@ -4,8 +4,8 @@ Two videos are required. / Se requieren dos videos.
 
 | Video | Duration / Duración | Link / Enlace | Done / Listo |
 |---|---|---|---|
-| Advertising pitch / Pitch publicitario | 1 to 2 minutes / 1 a 2 minutos | [Ver pitch](https://www.youtube.com/watch?v=b_TRdjd9YgI) | ☑ Enlace publicado |
-| Short usage tutorial / Tutorial corto de uso | 3 to 5 minutes / 3 a 5 minutos | [Ver tutorial](https://www.youtube.com/watch?v=ToMrkmw4pIU) | ☑ Enlace publicado |
+| Advertising pitch / Pitch publicitario (`AlertaMujer-pitch-publicitario.mp4`) | 1 to 2 minutes / 1 a 2 minutos | [Ver o descargar MP4](https://drive.google.com/file/d/1kdgJWpMYIDBZe91LRJHs_w0KXALURQs-/view?usp=sharing) | ☑ Archivo enlazado |
+| Short usage tutorial / Tutorial corto de uso (`Tutorial de Uso.mp4`) | 3 to 5 minutes / 3 a 5 minutos | [Ver o descargar MP4](https://drive.google.com/file/d/1vHyMte3tTOKHkvY8ptgIGUeUgV-Pj78H/view?usp=sharing) | ☑ Archivo enlazado |
 
 ## 1. Advertising pitch / Pitch publicitario
 
@@ -27,7 +27,7 @@ Shows how the system is used, on the real system. / Muestra cómo se usa el sist
 
 ## Rules / Reglas
 
-- Published on YouTube with access through the links above. / Publicados en YouTube con acceso mediante los enlaces anteriores.
-- Both links returned public YouTube metadata on 2026-11-06; verify playback in a private browser window. / Ambos enlaces devolvieron metadatos públicos de YouTube el 2026-11-06; verifique su reproducción en una ventana privada.
+- Original MP4 files shared through the Google Drive links above. / Archivos MP4 originales compartidos mediante los enlaces de Google Drive anteriores.
+- Both links opened the named MP4 files without signing in on 2026-11-07. The Drive preview did not play in that session; download and verify playback, duration and checklist content before evaluation. / Ambos enlaces abrieron los archivos MP4 identificados sin iniciar sesión el 2026-11-07. El visor de Drive no los reprodujo en esa sesión; descargue y verifique reproducción, duración y contenido de la lista antes de la evaluación.
 - Do not show passwords, tokens or real personal data. / No muestre contraseñas, tokens ni datos personales reales.
 - Use music and images you are allowed to use. / Use música e imágenes que tenga permiso de usar.
